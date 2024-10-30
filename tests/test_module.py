@@ -137,7 +137,7 @@ def test_stacked_module(size_a: int, size_b: int, val: float) -> None:
     assert named_parameters["module_b.parameter_b"].value == VAL_B
 
 
-# ## Misc Tests
+## Misc Tests
 
 # Check that the module runs forward correctly.
 
