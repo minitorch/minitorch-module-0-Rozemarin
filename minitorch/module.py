@@ -49,8 +49,8 @@ class Module:
             The name and `Parameter` of each ancestor parameter.
 
         """
-        p: Dict[str, Parameter] = self.__dict__["_parameters"]
-        p = list(zip(p.keys(), p.values()))
+        p = list(self.__dict__["_parameters"].items())
+        
         for loc_name, module in self.__dict__["_modules"].items():
             p_des = module.named_parameters()
             for des_name, param in p_des:
@@ -59,7 +59,7 @@ class Module:
 
     def parameters(self) -> Sequence[Parameter]:
         """Enumerate over all the parameters of this module and its descendents."""
-        p: Dict[str, Parameter] = self.__dict__["_parameters"]
+        p = self.__dict__["_parameters"]
         p = list(p.values())
         for module in self.modules():
             p += module.parameters()
