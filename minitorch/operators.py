@@ -1,11 +1,9 @@
 """Collection of the core mathematical operators used throughout the code base."""
 
 import math
-
-# ## Task 0.1
 from typing import Callable, Iterable, List, TypeVar
 
-#
+# ## Task 0.1
 # Implementation of a prelude of elementary functions.
 
 # Mathematical functions:
@@ -31,128 +29,114 @@ from typing import Callable, Iterable, List, TypeVar
 # For is_close:
 # $f(x) = |x - y| < 1e-2$
 
-
-# TODO: Implement for Task 0.1.
-# Multiplies two numbers
 def mul(x: float, y: float) -> float:
+    """Multiply two numbers."""
     return x * y
 
-# Returns the input unchanged
 def id(x: float) -> float:
+    """Return the input unchanged."""
     return x
 
-# Adds two numbers
 def add(x: float, y: float) -> float:
+    """Add two numbers."""
     return x + y
 
-# Negates a number
 def neg(x: float) -> float:
+    """Negate a number."""
     return -x
 
-# Checks if one number is less than another
 def lt(x: float, y: float) -> bool:
+    """Check if one number is less than another."""
     return x < y
 
-# Checks if two numbers are equal
 def eq(x: float, y: float) -> bool:
+    """Check if two numbers are equal."""
     return x == y
 
-# Returns the larger of two numbers
 def max(x: float, y: float) -> float:
+    """Return the larger of two numbers."""
     return x if x > y else y
 
-# Checks if two numbers are close in value
 def is_close(x: float, y: float, tol: float = 1e-5) -> bool:
+    """Check if two numbers are close in value, within a tolerance."""
     return abs(x - y) <= tol
 
-# Calculates the sigmoid function
 def sigmoid(x: float) -> float:
+    """Calculate the sigmoid function."""
     if x >= 0:
         return 1.0 / (1.0 + math.exp(-x))
     else:
         return math.exp(x) / (1.0 + math.exp(x))
 
-# Applies the ReLU activation function
 def relu(x: float) -> float:
+    """Apply the ReLU activation function."""
     return max(0, x)
 
-# Calculates the natural logarithm
 def log(x: float) -> float:
+    """Calculate the natural logarithm."""
     return math.log(x)
 
-# Calculates the exponential function
 def exp(x: float) -> float:
+    """Calculate the exponential function."""
     return math.exp(x)
 
-# Calculates the reciprocal
 def inv(x: float) -> float:
+    """Calculate the reciprocal of a number, returning 0 if x is 0."""
     return 1 / x if x != 0 else 0.0
 
-# Computes the derivative of log times a second argument
 def log_back(x: float, d: float) -> float:
-    return d / x if x != 0 else 0.0  
+    """Compute the derivative of log with respect to x, scaled by d."""
+    return d / x if x != 0 else 0.0
 
-# Computes the derivative of reciprocal times a second argument
 def inv_back(x: float, d: float) -> float:
-    return -d / (x * x) if x != 0 else 0.0 
+    """Compute the derivative of reciprocal with respect to x, scaled by d."""
+    return -d / (x * x) if x != 0 else 0.0
 
-# Computes the derivative of ReLU times a second argument
 def relu_back(x: float, d: float) -> float:
+    """Compute the derivative of ReLU with respect to x, scaled by d."""
     return d if x > 0 else 0.0
 
-
-
 # ## Task 0.3
-
 # Small practice library of elementary higher-order functions.
 
-# Implement the following core functions
-# - map
-# - zipWith
-# - reduce
-#
-# Use these to implement
-# - negList : negate a list
-# - addLists : add two lists together
-# - sum: sum lists
-# - prod: take the product of lists
+T = TypeVar("T")  # Input type
+U = TypeVar("U")  # Output type
 
-T = TypeVar('T')  # Input type
-U = TypeVar('U')  # Output type
-
-# Higher-order function that applies a given function to each element of an iterable
 def map(func: Callable[[T], U], iterable: Iterable[T]) -> List[U]:
+    """Apply a function to each element in an iterable."""
     arr = []
     for el in iterable:
         arr.append(func(el))
     return arr
 
-# Higher-order function that combines elements from two iterables using a given function
-def zipWith(func: Callable[[T, T], U], iterable1: Iterable[T], iterable2: Iterable[T]) -> List[U]:
+def zipWith(
+    func: Callable[[T, T], U], iterable1: Iterable[T], iterable2: Iterable[T]
+) -> List[U]:
+    """Apply a function to pairs of elements from two iterables."""
     arr = []
     for el1, el2 in zip(iterable1, iterable2):
         arr.append(func(el1, el2))
     return arr
 
-# Higher-order function that reduces an iterable to a single value using a given function
 def reduce(func: Callable[[T, T], T], iterable: Iterable[T], initial: T) -> T:
+    """Reduce an iterable to a single value by iteratively applying a function."""
     ans = initial
     for el in iterable:
         ans = func(ans, el)
     return ans
 
-# Negate all elements in a list using map
 def negList(lst: List[float]) -> List[float]:
+    """Return a list with each element negated."""
     return map(neg, lst)
 
-# Add corresponding elements from two lists using zipWith
 def addLists(lst1: List[float], lst2: List[float]) -> List[float]:
+    """Return a list with elements from two lists added element-wise."""
     return zipWith(add, lst1, lst2)
 
-# Sum all elements in a list using reduce
 def sum(lst: List[float]) -> float:
+    """Sum all elements in a list."""
     return reduce(add, lst, 0.0)
 
-# Calculate the product of all elements in a list using reduce
 def prod(lst: List[float]) -> float:
+    """Calculate the product of all elements in a list."""
     return reduce(mul, lst, 1.0)
